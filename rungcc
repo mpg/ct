@@ -4,9 +4,8 @@ set -eu
 
 OLEVELS='0 1 2 3 s'
 FILES=$( ls *.c )
-BITS="32 64"
 
-for B in $BITS; do
+for B in 32 64; do
     for O in $OLEVELS; do
         for F in $FILES; do
             echo "gcc -m$B -O$O -S $F -o ${F%.c}-gcc-x86-$B-O${O}.s"
@@ -25,6 +24,17 @@ if which arm-none-eabi-gcc >/dev/null; then
             for F in $FILES; do
                 echo "arm-none-eabi-gcc -march=$A $T -O$O -S $F -o ${F%.c}-gcc-$A-O${O}.s"
                 arm-none-eabi-gcc -march=$A $T -O$O -S $F -o ${F%.c}-gcc-$A-O${O}.s
+            done
+        done
+    done
+fi
+
+if which mipsel-linux-gnu-gcc >/dev/null; then
+    for B in 32 64; do
+        for O in $OLEVELS; do
+            for F in $FILES; do
+                echo "mipsel-linux-gnu-gcc -ffreestanding -march=mips$B -O$O -S $F -o ${F%.c}-gcc-mips$B-O${O}.s"
+                mipsel-linux-gnu-gcc -ffreestanding -march=mips$B -O$O -S $F -o ${F%.c}-gcc-mips$B-O${O}.s
             done
         done
     done
