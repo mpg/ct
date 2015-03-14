@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -eu
+
+OLEVELS='0 1 2 3 space time'
+FILES=$( ls *.c )
+
+arch()
+{
+    for O in $OLEVELS; do
+        for F in $FILES; do
+            echo "armcc --cpu=$2 -O$O -S $F -o ${F%.c}-armcc-$1-O${O}.s"
+            armcc --cpu=$2 -O$O -S $F -o ${F%.c}-armcc-$1-O${O}.s
+        done
+    done
+}
+
+arch armv6  ARM1176JZF-S
+arch armv6m Cortex-M0
+arch armv7m Cortex-M3
+arch armv7a Cortex-A7
