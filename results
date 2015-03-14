@@ -1,5 +1,5 @@
-. = no branch = good
-X = branch = bad
+. = no obvious data-dependent branch = probably good
+X = data-dependent branch = bad
 
         Clang 3.5       GCC 4.9         armcc 5.03
 
