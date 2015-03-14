@@ -39,3 +39,12 @@ if which mipsel-linux-gnu-gcc >/dev/null; then
         done
     done
 fi
+
+if which sparc64-linux-gnu-gcc >/dev/null; then
+    for O in $OLEVELS; do
+        for F in $FILES; do
+            echo "sparc64-linux-gnu-gcc -ffreestanding -O$O -S $F -o ${F%.c}-gcc-sparc64-O${O}.s"
+            sparc64-linux-gnu-gcc -ffreestanding -O$O -S $F -o ${F%.c}-gcc-sparc64-O${O}.s
+        done
+    done
+fi
