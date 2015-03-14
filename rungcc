@@ -15,3 +15,17 @@ for B in $BITS; do
     done
 done
 
+if which arm-none-eabi-gcc >/dev/null; then
+    for A in armv6 armv6-m armv7-m armv7-a armv8-a; do
+        case $A in
+            *-m)    T=-mthumb ;;
+            *)      T='' ;;
+        esac
+        for O in $OLEVELS; do
+            for F in $FILES; do
+                echo "arm-none-eabi-gcc -march=$A $T -O$O -S $F -o ${F%.c}-gcc-$A-O${O}.s"
+                arm-none-eabi-gcc -march=$A $T -O$O -S $F -o ${F%.c}-gcc-$A-O${O}.s
+            done
+        done
+    done
+fi
