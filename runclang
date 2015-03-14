@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -eu
+
+OLEVELS='0 1 2 3 s z'
+FILES=$( ls *.c )
+
+arch()
+{
+    for O in $OLEVELS; do
+        for F in $FILES; do
+            T=$( echo "$@" | sed 's/ //g' )
+            echo "clang -target $@ -O$O -S $F -o ${F%.c}-clang-$T-O${O}.s"
+            clang -target "$@" -O$O -S $F -o ${F%.c}-$T-O${O}.s
+        done
+    done
+}
+
+arch armv6--eabi
+arch armv6m--eabi
+arch armv7m--eabi
+arch armv7a--eabi
+arch armv8a--eabi
+arch mips
+arch mips64
+arch sparc
+arch sparcv9
+arch powerpc
+arch powerpc64
+arch x86_64-linux-gnu
+arch i686-linux-gnu
+
